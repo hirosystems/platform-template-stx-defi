@@ -14,7 +14,7 @@ The [stx-defi.clar](/examples/stx-defi/contracts/stx-defi.clar) contract include
 + `get-amount-owed` function to get the total amount owed by the user
 + `claim-yield` function for users to claim their yield based on the pool reserve and their deposits
 
-> **NOTE**: To use this example with Clarinet inside [Hiro Platform](https://platform.hiro.so), you can open the terminal session inside VS code by navigating to File -> View -> Terminal.
+To add a new contract, use [Clarinet](https://docs.hiro.so/stacks/clarinet).
 
 ## Test your contract
 
