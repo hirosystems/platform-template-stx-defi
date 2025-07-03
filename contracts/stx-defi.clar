@@ -91,7 +91,7 @@
   (ok (map-get? deposits { owner: tx-sender }))
 )
 
-;; Read-only function to get the total balance 
+;; Read-only function to get the total balance
 (define-read-only (get-balance)
   (ok (var-get total-deposits))
 )
