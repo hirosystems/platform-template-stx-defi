@@ -7,5 +7,5 @@ cache_dir = "./.cache"
 
 [contracts.stx-defi]
 path = "contracts/stx-defi.clar"
-clarity_version = 3
-epoch = 3.0
+clarity_version = 4
+epoch = "latest"

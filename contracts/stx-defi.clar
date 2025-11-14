@@ -37,7 +37,7 @@
       (current-balance (default-to u0 (get amount (map-get? deposits { owner: tx-sender }))))
     )
     ;; Transfer the STX from sender = "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM" to recipient = "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.stx-defi (ie: contract identifier on the chain!)".
-    (try! (stx-transfer? amount tx-sender (as-contract tx-sender)))
+    (try! (stx-transfer? amount tx-sender current-contract))
     ;; Update the user's deposit amount in the map.
     (map-set deposits { owner: tx-sender } { amount: (+ current-balance amount) })
     ;; Update the total deposits variable.
@@ -74,7 +74,9 @@
     (asserts! (<= new-loan allowed-borrow) err-overborrow)
     ;; Transfer the borrowed STX to the user.
     (let ((recipient tx-sender))
-      (try! (as-contract (stx-transfer? amount tx-sender recipient)))
+      (try! (as-contract? ((with-stx amount))
+        (try! (stx-transfer? amount current-contract recipient))
+      ))
     )
     ;; Update the user's loan details in the map.
     (map-set loans tx-sender {
@@ -141,7 +143,7 @@
     ;; Ensure the repayment amount is not more than the total due.
     (asserts! (>= total-due amount) err-overpay)
     ;; Transfer the repayment amount from the user to the contract.
-    (try! (stx-transfer? amount tx-sender (as-contract tx-sender)))
+    (try! (stx-transfer? amount tx-sender current-contract))
     ;; Update the user's loan details in the map with the new total due.
     (map-set loans tx-sender {
       amount: (- total-due amount),
@@ -164,7 +166,9 @@
     )
     ;; Transfer the yield amount from the contract to the user.
     (let ((recipient tx-sender))
-      (try! (as-contract (stx-transfer? yield-amount tx-sender recipient)))
+      (try! (as-contract? ((with-stx yield-amount))
+        (try! (stx-transfer? yield-amount current-contract recipient))
+      ))
     )
     ;; Update the pool reserve by subtracting the claimed yield.
     (var-set pool-reserve (- (var-get pool-reserve) yield-amount))
